@@ -1,11 +1,11 @@
-   /* cs152-miniL phase1 */
-   
+/* cs152-miniL phase1 */
+
 %{   
-   /* write your C code here for definitions of variables and including headers */
+/* write your C code here for definitions of variables and including headers */
    int currLine = 1; int currPos = 1;
 %}
 
-   /* some common rules */
+/* some common rules */
 DIGIT    [0-9]
 ALPHA    [a-zA-Z]
 
@@ -13,7 +13,7 @@ ALPHA    [a-zA-Z]
 %%
    /* specific lexer rules in regex */
 
-"##"[^\n]*         {/* consume and do nothing */ }
+"##"[^\n]*        {/* comment, consume and do nothing */ }
 
 "function"        {printf("FUNCTION\n"); currPos += yyleng;}
 "beginparams"     {printf("BEGIN_PARAMS\n"); currPos += yyleng;}
@@ -43,45 +43,41 @@ ALPHA    [a-zA-Z]
 "not"             {printf("NOT\n"); currPos += yyleng;}
 "true"            {printf("TRUE\n"); currPos += yyleng;}
 "false"           {printf("FALSE\n"); currPos += yyleng;}
-"return"           {printf("RETURN\n"); currPos += yyleng;}
+"return"          {printf("RETURN\n"); currPos += yyleng;}
 
-"-"            {printf("SUB\n"); currPos += yyleng;}
-"+"            {printf("ADD\n"); currPos += yyleng;}
-"*"            {printf("MULT\n"); currPos += yyleng;}
-"/"            {printf("DIV\n"); currPos += yyleng;}
-"%"            {printf("MOD\n"); currPos += yyleng;}
+"-"               {printf("SUB\n"); currPos += yyleng;}
+"+"               {printf("ADD\n"); currPos += yyleng;}
+"*"               {printf("MULT\n"); currPos += yyleng;}
+"/"               {printf("DIV\n"); currPos += yyleng;}
+"%"               {printf("MOD\n"); currPos += yyleng;}
 
-"=="           {printf("EQ\n"); currPos += yyleng;}
-"<>"           {printf("NEQ\n"); currPos += yyleng;}
-"<="           {printf("LTE\n"); currPos += yyleng;}
-">="           {printf("GTE\n"); currPos += yyleng;}
-"<"            {printf("LT\n"); currPos += yyleng;}
-">"           {printf("GT\n"); currPos += yyleng;}
+"=="              {printf("EQ\n"); currPos += yyleng;}
+"<>"              {printf("NEQ\n"); currPos += yyleng;}
+"<="              {printf("LTE\n"); currPos += yyleng;}
+">="              {printf("GTE\n"); currPos += yyleng;}
+"<"               {printf("LT\n"); currPos += yyleng;}
+">"               {printf("GT\n"); currPos += yyleng;}
 
-";"           {printf("SEMICOLON\n"); currPos += yyleng;}
-":"           {printf("COLON\n"); currPos += yyleng;}
-","           {printf("COMMA\n"); currPos += yyleng;}
-"("           {printf("L_PAREN\n"); currPos += yyleng;}
-")"           {printf("R_PAREN\n"); currPos += yyleng;}
-"["           {printf("L_SQUARE_BRACKET\n"); currPos += yyleng;}
-"]"           {printf("R_SQUARE_BRACKET\n"); currPos += yyleng;}
-":="           {printf("ASSIGN\n"); currPos += yyleng;}
+";"               {printf("SEMICOLON\n"); currPos += yyleng;}
+":"               {printf("COLON\n"); currPos += yyleng;}
+","               {printf("COMMA\n"); currPos += yyleng;}
+"("               {printf("L_PAREN\n"); currPos += yyleng;}
+")"               {printf("R_PAREN\n"); currPos += yyleng;}
+"["               {printf("L_SQUARE_BRACKET\n"); currPos += yyleng;}
+"]"               {printf("R_SQUARE_BRACKET\n"); currPos += yyleng;}
+":="              {printf("ASSIGN\n"); currPos += yyleng;}
 
 ({DIGIT}+(({ALPHA})|(_))+(({DIGIT})|({ALPHA})|(_))*)       {printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", currLine, currPos, yytext); exit(0);}
 ({ALPHA}+(({DIGIT})|({ALPHA})|(_))*_+)                     {printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", currLine, currPos, yytext); exit(0);}
 ({ALPHA}+(({DIGIT})|({ALPHA})|(_))*)                       {printf("IDENT %s\n", yytext); currPos += yyleng;}
 
-(\.{DIGIT}+)|({DIGIT}+(\.{DIGIT}*)?([eE][+-]?[0-9]+)?)    {printf("NUMBER %s\n", yytext); currPos += yyleng;}
+(\.{DIGIT}+)|({DIGIT}+(\.{DIGIT}*)?([eE][+-]?[0-9]+)?)     {printf("NUMBER %s\n", yytext); currPos += yyleng;}
 
 [ \t]+         {/* ignore spaces */ currPos += yyleng;}
-
 "\n"           {++currLine; currPos = 1;}
-
 .              {printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", currLine, currPos, yytext); exit(0);}
 
-
 %%
-	/* C functions used in lexer */
 
 int main(int argc, char ** argv)
 {

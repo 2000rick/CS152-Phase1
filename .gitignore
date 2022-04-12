@@ -2,3 +2,4 @@ miniL
 miniL-lex.c
 miniL-lex.o
 mytest.min
+*.tokens
